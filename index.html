@@ -28,6 +28,11 @@ border-radius:10px;
 background:#c89f6a;
 color:white;
 font-size:16px;
+cursor:pointer;
+}
+
+#resultado{
+margin-top:20px;
 }
 </style>
 
@@ -38,7 +43,7 @@ font-size:16px;
 
 <div class="punto">
 <h2>Día 1</h2>
-<button onclick="abrirDia1()">Abrir</button>
+<button onclick="abrirDia1()">Abrir recuerdo</button>
 </div>
 
 <div id="resultado"></div>
@@ -47,27 +52,33 @@ font-size:16px;
 
 function abrirDia1(){
 
-let respuesta=prompt(
+let respuesta = prompt(
 "¿Cómo se llamaba nuestro sitio favorito?"
 );
 
-if(!respuesta)return;
+if(!respuesta) return;
 
-respuesta=respuesta.toLowerCase();
+respuesta = respuesta
+.toLowerCase()
+.trim();
 
-const validas=[
+const validas = [
 "manolitos",
 "los manolitos"
 ];
 
 if(validas.includes(respuesta)){
 
-document.getElementById("resultado").innerHTML=
-"<h2>❤️ Recuerdo desbloqueado</h2><p>Aquí irá una foto y tu mensaje.</p>";
+document.getElementById("resultado").innerHTML = `
+<h2>❤️ Recuerdo desbloqueado</h2>
+<p>
+Aquí aparecerá la foto y el mensaje del Día 1.
+</p>
+`;
 
 }else{
 
-alert("Respuesta incorrecta");
+alert("Respuesta incorrecta 😜");
 
 }
 
