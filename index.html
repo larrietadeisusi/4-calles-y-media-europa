@@ -1,14 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4 calles y media Europa</title>
-</head>
 
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f5f1e8;
+padding:20px;
+text-align:center;
+}
+
+.punto{
+background:white;
+padding:15px;
+margin:10px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#c89f6a;
+color:white;
+font-size:16px;
+}
+</style>
+
+</head>
 <body>
 
 <h1>4 calles y media Europa</h1>
 
-<p>Si estás viendo esto, nuestra app funciona.</p>
+<div class="punto">
+<h2>Día 1</h2>
+<button onclick="abrirDia1()">Abrir</button>
+</div>
+
+<div id="resultado"></div>
+
+<script>
+
+function abrirDia1(){
+
+let respuesta=prompt(
+"¿Cómo se llamaba nuestro sitio favorito?"
+);
+
+if(!respuesta)return;
+
+respuesta=respuesta.toLowerCase();
+
+const validas=[
+"manolitos",
+"los manolitos"
+];
+
+if(validas.includes(respuesta)){
+
+document.getElementById("resultado").innerHTML=
+"<h2>❤️ Recuerdo desbloqueado</h2><p>Aquí irá una foto y tu mensaje.</p>";
+
+}else{
+
+alert("Respuesta incorrecta");
+
+}
+
+}
+
+</script>
 
 </body>
 </html>
