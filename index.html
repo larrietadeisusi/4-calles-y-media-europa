@@ -2,89 +2,59 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="4 calles">
+<meta name="theme-color" content="#0d0d0f">
 <title>4 calles y media Europa</title>
-
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#f5f1e8;
-padding:20px;
-text-align:center;
-}
-
-.punto{
-background:white;
-padding:15px;
-margin:10px;
-border-radius:15px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-button{
-padding:10px 20px;
-border:none;
-border-radius:10px;
-background:#c89f6a;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-#resultado{
-margin-top:20px;
-}
-</style>
-
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="iconos/icon-192.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="app">
+  <section id="home" class="screen active">
+    <div class="route-bg"></div>
+    <div class="home-card">
+      <div class="eyebrow">27 JUN · 18 JUL</div>
+      <h1>4 calles<br><span>y media Europa</span></h1>
+      <p class="muted">Tú recorriendo media Europa.</p>
+      <p class="home-line">Y aquí seguirás encontrando tu hogar.</p>
+      <div class="count-pill" id="countdown">❤️ 22 días para volver a abrazarte</div>
+      <button class="primary" onclick="goMap()">Entrar</button>
+    </div>
+  </section>
 
-<h1>4 calles y media Europa</h1>
+  <section id="mapScreen" class="screen">
+    <header class="topbar">
+      <div>
+        <div class="small">4 calles y media Europa</div>
+        <h2 id="mapTitle">Nuestro mapa</h2>
+      </div>
+      <button class="ghost" onclick="goHome()">Inicio</button>
+    </header>
+    <div class="song-card" id="songCard">🎵 Hoy suena · hogar</div>
+    <div class="map-wrap">
+      <svg viewBox="0 0 320 560" class="route-svg" aria-hidden="true">
+        <path d="M76 505 C95 440, 70 385, 125 335 C180 285, 125 235, 185 190 C245 145, 185 105, 245 58" class="route-line"/>
+      </svg>
+      <div id="points"></div>
+    </div>
+    <p class="hint">Toca el punto de hoy. Los futuros se abrirán solos cuando llegue su día.</p>
+  </section>
 
-<div class="punto">
-<h2>Día 1</h2>
-<button onclick="abrirDia1()">Abrir recuerdo</button>
+  <section id="dayScreen" class="screen">
+    <header class="topbar">
+      <button class="ghost" onclick="goMap()">← Mapa</button>
+      <div class="small" id="dayMeta"></div>
+    </header>
+    <div class="question-card" id="questionBox"></div>
+    <div class="memory-card hidden" id="memoryBox"></div>
+  </section>
 </div>
-
-<div id="resultado"></div>
-
 <script>
-
-function abrirDia1(){
-
-let respuesta = prompt(
-"¿Cómo se llamaba nuestro sitio favorito?"
-);
-
-if(!respuesta) return;
-
-respuesta = respuesta
-.toLowerCase()
-.trim();
-
-const validas = [
-"manolitos",
-"los manolitos"
-];
-
-if(validas.includes(respuesta)){
-
-document.getElementById("resultado").innerHTML = `
-<h2>❤️ Recuerdo desbloqueado</h2>
-<p>
-Aquí aparecerá la foto y el mensaje del Día 1.
-</p>
-`;
-
-}else{
-
-alert("Respuesta incorrecta 😜");
-
-}
-
-}
-
+window.TRIP_DAYS = [{"date": "27 junio", "place": "Amsterdam", "city": "Amsterdam", "question": "Nuestro sitio favorito, el más especial", "answers": ["el monte", "monte", "banco", "banquito"], "type": "image", "media": "fotos/dia1.jpg", "song": "Hoy suena: casa", "message": "Si este viaje tenía que empezar en algún sitio, tenía que ser aquí. Durante las próximas tres semanas tendrás un pequeño rincón para volver a nuestras cuatro calles cuando te apetezca. No importa cuántos kilómetros haya entre nosotras hoy. ❤️"}, {"date": "28 junio", "place": "Amsterdam", "city": "Amsterdam", "question": "Mismo número de calles que de caladas, prometido", "answers": ["cuatro", "4"], "type": "image", "media": "fotos/dia2.jpg", "song": "Hoy suena: cuatro calles", "message": "Ojalá poder recorrerlas a tu lado. Mientras tanto, aquí seguirás encontrando tu hogar."}, {"date": "29 junio", "place": "Amsterdam", "city": "Amsterdam", "question": "Las flores siempre…", "answers": ["rosas", "margaritas", "margaritas rosas", "moradas", "margaritas moradas", "lilas", "margaritas lilas"], "type": "image", "media": "fotos/dia3.jpg", "song": "Hoy suena: aniversario", "message": "FELIZ ANIVERSARIO, mi cosa pecosa. TE AMO."}, {"date": "30 junio", "place": "Berlín", "city": "Berlín", "question": "Nuestra canción favorita", "answers": ["la boca junta"], "type": "video", "media": "videos/dia4.mp4", "song": "Hoy suena: La Boca Junta", "message": "Mira tu anillo. Yo no paro de hacerlo. ¿Cuál es tu respuesta?"}, {"date": "1 julio", "place": "Berlín", "city": "Berlín", "question": "Nuestro lugar de los jueves", "answers": ["mercado", "el mercado"], "type": "image", "media": "fotos/dia5.jpg", "song": "Hoy suena: jueves", "message": "Que nunca nos falten los jueves de mercado, las cervezas improvisadas y la suerte de poder seguir construyendo recuerdos contigo."}, {"date": "2 julio", "place": "Berlín", "city": "Berlín", "question": "La ciudad donde empezó todo y donde hemos vuelto", "answers": ["valencia"], "type": "image", "media": "fotos/dia6.jpg", "song": "Hoy suena: mundo", "message": "Prepárate para recorrer el mundo de la mano. Roma, Costa Rica, San Sebastián o el sillón de Foxá. Todo vale si es contigo."}, {"date": "3 julio", "place": "Berlín → Praga", "city": "Praga", "question": "Pies…", "answers": ["descalzos"], "type": "image", "media": "fotos/dia7.jpg", "song": "Hoy suena: noches sin dormir", "message": "Y sueños grandes. Por las noches de no dormir, las de morir de sueño y las de desvelos a las 3 de la mañana. Por las mañanas de besos y abrazos y por dormir haciendo puzzle."}, {"date": "4 julio", "place": "Praga", "city": "Praga", "question": "Lo que voy a echar de menos esta noche antes de dormir…", "answers": ["hablar", "llamada", "teléfono", "telefono"], "type": "image", "media": "fotos/dia8.jpg", "song": "Hoy suena: llamada", "message": "Ojalá pudiera dormirme contigo al otro lado. Te echo muchísimo de menos, cosa pecosa. Pero hoy ya es un día menos para volver a abrazarte."}, {"date": "5 julio", "place": "Praga", "city": "Praga", "question": "Tú eres mi…", "answers": ["cosa", "cosa pecosa"], "type": "image", "media": "fotos/dia9.jpg", "song": "Hoy suena: cosa pecosa", "message": "Solo quiero ver esa sonrisa, esa peca y poder pasarme horas y horas hablando de la vida. Y prometo seguir recordándote cada día lo importante que eres para mí."}, {"date": "6 julio", "place": "Praga → Budapest", "city": "Budapest", "question": "Pregunta pendiente", "answers": ["pendiente"], "type": "image", "media": "fotos/dia10.jpg", "song": "Hoy suena: pendiente", "message": "Mensaje pendiente. Mañana lo cambiamos por uno vuestro."}, {"date": "7 julio", "place": "Budapest", "city": "Budapest", "question": "Pregunta pendiente", "answers": ["pendiente"], "type": "image", "media": "fotos/dia11.jpg", "song": "Hoy suena: pendiente", "message": "Mensaje pendiente. Mañana lo cambiamos por uno vuestro."}, {"date": "8 julio", "place": "Budapest", "city": "Budapest", "question": "¿A quién le debemos todo lo nuestro? Creo que nos escuchó de tanto ir.", "answers": ["maría", "maria", "la virgen", "virgen", "mila", "la mila", "milagrosa", "la milagrosa"], "type": "image", "media": "fotos/dia12.jpg", "song": "Hoy suena: María", "message": "Porque siempre lleguemos a Jesús por María y que seamos 3: tres anillos unidos, las dos con Dios en el centro."}, {"date": "9 julio", "place": "Budapest → Split", "city": "Split", "question": "Y hoy te digo…", "answers": ["feliz aniversario", "felicidades"], "type": "image", "media": "fotos/dia13.jpg", "song": "Hoy suena: sí", "message": "No mujer, cásate conmigo."}, {"date": "10 julio", "place": "ULTRA I ✨🪩", "city": "Split", "question": "El plan más divertido que hemos hecho", "answers": ["we love disco", "welovedisco", "we love disco"], "type": "image", "media": "fotos/dia14.jpg", "song": "Hoy suena: We Love Disco", "message": "Aaarriba las manos. Si alguien nos hubiera visto ese día habría pensado que estábamos completamente locas. Y seguramente tendría razón. Una de las cosas que más admiro de nosotras son las risas sin límite que tanto nos unen."}, {"date": "11 julio", "place": "ULTRA II ✨🪩", "city": "Split", "question": "Allí te llevé: el viaje en coche más peligroso y más especial. Sonaron sus canciones mientras yo esperaba impaciente en casa rezando porque no cambiases de opinión.", "answers": ["concierto", "fito", "fito y fitipaldis", "concierto de fito"], "type": "image", "media": "fotos/dia15.jpg", "song": "Hoy suena: Fito", "message": "Que nunca quites la mano de mi pierna, que nunca dejes de ser mi mayor compañía, que nunca te alejes ni medio metro de mí. Te quiero, cosa."}, {"date": "12 julio", "place": "ULTRA III ✨🪩", "city": "Split", "question": "No hay domingo sin…", "answers": ["santagloria", "santa gloria", "desayuno"], "type": "image", "media": "fotos/dia16.jpg", "song": "Hoy suena: domingo", "message": "Mensaje pendiente. Aquí irá uno de domingos, desayunos y volver a encontrarnos en lo pequeño."}, {"date": "13 julio", "place": "Split → Dubrovnik", "city": "Dubrovnik", "question": "Si fuéramos plantas, seríamos…", "answers": ["cactus"], "type": "image", "media": "fotos/dia17.jpg", "song": "Hoy suena: cactus", "message": "En el norte, en el sur... donde sea. Siempre voy a querer caminar hacia donde estés tú. Volveremos a vernos y espero que pronto. Me flipa tu locura."}, {"date": "14 julio", "place": "Dubrovnik", "city": "Dubrovnik", "question": "Mi parte favorita de tu cuerpo", "answers": ["sonrisa", "ojos", "peca"], "type": "image", "media": "fotos/dia18.jpg", "song": "Hoy suena: sonrisa", "message": "Solo quiero comerte a besos, cosa."}, {"date": "15 julio", "place": "Dubrovnik", "city": "Dubrovnik", "question": "Nuestro bar de confianza", "answers": ["volapie", "volapié"], "type": "image", "media": "fotos/dia19.jpg", "song": "Hoy suena: brindis", "message": "Paula te espera. Vuelve ya. Tengo demasiadas cosas que contarte y todavía más ganas de escucharte. He practicado para ganarte al doble y, sobre todo, he guardado brindis para que cuando llegues solo podamos celebrar la suerte de tenerte en mi vida."}, {"date": "16 julio", "place": "Dubrovnik → regreso", "city": "Regreso", "question": "Lo que más hemos hecho las tardes de invierno", "answers": ["estudiar"], "type": "image", "media": "fotos/dia20.jpg", "song": "Hoy suena: equipo", "message": "Y ahí es donde me enseñaste que somos el mejor equipo. En las buenas y en las no tan buenas, en lo divertido y en la obligación. Porque haces pequeños mis problemas, me apoyas en mis locuras y remas a contracorriente siempre a mi lado. Te quiero."}, {"date": "17 julio", "place": "Cuenta atrás", "city": "Casi casa", "question": "Papa León", "answers": ["te queremos un montón", "x i v", "xiv", "x palito v"], "type": "image", "media": "fotos/dia21.jpg", "song": "Hoy suena: ya casi", "message": "Ya casi puedo dejar de mirar el calendario. Ya casi vuelves. Tengo preparadas las cervezas, las historias, los abrazos y todas las ganas de celebrar la suerte de tenerte en mi vida."}, {"date": "18 julio", "place": "Vuelta a casa ❤️", "city": "Casa", "question": "Completa la frase: No mujer…", "answers": ["casate conmigo", "cásate conmigo"], "type": "image", "media": "fotos/dia22.jpg", "song": "Hoy suena: hogar", "message": "Ya no hacen falta más recuerdos, ni mapas, ni kilómetros. Ya estás aquí. Bienvenida a nuestras cuatro calles. Te quiero."}];
 </script>
-
+<script src="script.js"></script>
 </body>
 </html>
